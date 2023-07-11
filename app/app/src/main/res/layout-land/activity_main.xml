@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <fragment
+        android:id="@+id/fragmentContainerView"
+        class="com.example.week7.Frag"
+        android:layout_width="284dp"
+        android:layout_height="325dp"
+        android:layout_marginStart="50dp"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fragmentDetailContainerView"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/countries_frag" />
+
+    <fragment
+        android:id="@+id/fragmentDetailContainerView"
+        class="com.example.week7.DetailsFragment"
+        android:layout_width="358dp"
+        android:layout_height="313dp"
+        android:layout_marginEnd="15dp"
+        android:foregroundGravity="center"
+        android:tag="FRAGB"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/details__fragment" />
+</androidx.constraintlayout.widget.ConstraintLayout>
