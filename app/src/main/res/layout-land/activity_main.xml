@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
         class="com.example.finalproject.Frag"
         android:layout_width="284dp"
@@ -14,14 +14,14 @@
         android:layout_marginStart="50dp"
         android:foregroundGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fragmentDetailContainerView"
+        app:layout_constraintEnd_toStartOf="@+id/fragmentDetailContainerView2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/products_frag" />
 
-    <fragment
-        android:id="@+id/fragmentDetailContainerView"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentDetailContainerView2"
         class="com.example.finalproject.DetailsFragment"
         android:layout_width="358dp"
         android:layout_height="313dp"
