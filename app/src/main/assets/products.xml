@@ -5,11 +5,20 @@
         <brand>Tnuva</brand>
         <details>3%</details>
         <price>5.5</price>
+        <image>p0</image>
     </product>
     <product>
         <name>Milk</name>
         <brand>Tara</brand>
         <details>3%</details>
         <price>5.9</price>
+        <image>p1</image>
+    </product>
+    <product>
+        <name>Butter</name>
+        <brand>Tara</brand>
+        <details>200g</details>
+        <price>8.9</price>
+        <image>p2</image>
     </product>
 </products>

@@ -14,6 +14,7 @@ public class ProductXMLParser {
     final static String KEY_BRAND="brand";
     final static String KEY_DETAILS="details";
     final static String KEY_PRICE="price";
+    final static String KEY_IMAGE="image";
 
 
 
@@ -55,6 +56,8 @@ public class ProductXMLParser {
                             currentProduct.setDetails(strTagText);
                         else if(inTag.equalsIgnoreCase(KEY_PRICE))
                             currentProduct.price = Double.valueOf(strTagText);
+                        else if(inTag.equalsIgnoreCase(KEY_IMAGE))
+                            currentProduct.image = strTagText;
                         inTag ="";
                         break;
                 }//switch
