@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/cart"
+        android:icon="@drawable/cart"
+        android:title="cart"
+        app:showAsAction="always|collapseActionView"/>
+    <item
         android:id="@+id/settings"
         android:icon="@drawable/settings"
         android:title="settings"
         app:showAsAction="always|collapseActionView"/>
-
+    <item
+        android:id="@+id/exit"
+        android:icon="@drawable/exit"
+        android:title="exit"
+        app:showAsAction="always|collapseActionView" />
 
 
 </menu>

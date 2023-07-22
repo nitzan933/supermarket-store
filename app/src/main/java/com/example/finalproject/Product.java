@@ -1,20 +1,28 @@
 package com.example.finalproject;
 
 public class Product {
+    String image;
     String name;
     String brand;
     String details;
     Double price;
 
-    public Product(String name, String brand, String details, Double price){
+    public Product(String name, String brand, String details, Double price, String image){
         this.name = name;
         this.brand = brand;
         this.details = details;
         this.price = price;
-        //this.details = "";
+        this.image = image;
     }
     public Product() {
         // TODO Auto-generated constructor stub
+    }
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public String getName() {

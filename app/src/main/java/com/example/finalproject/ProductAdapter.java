@@ -1,6 +1,7 @@
 package com.example.finalproject;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -56,7 +58,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     public void onBindViewHolder(@NonNull ProductAdapter.MyViewHolder holder, int position)
     {
         selected = this.viewModel.getPosition();
-        holder.itemView.setBackgroundColor(selected == position ? Color.valueOf(0xFFDEDFE2).toArgb() : Color.TRANSPARENT);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if(prefs.getBoolean("switch_dark_theme", false)){
+            holder.itemView.setBackgroundColor(selected == position ? Color.valueOf(0xFF282A3A).toArgb() : Color.TRANSPARENT);
+        }
+        else holder.itemView.setBackgroundColor(selected == position ? Color.valueOf(0xFFDEDFE2).toArgb() : Color.TRANSPARENT);
         holder.addRowToList(position);
     }
 
@@ -77,7 +83,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             row = itemView.findViewById(R.id.row);
-            //image = itemView.findViewById(R.id.product_image);
+            image = itemView.findViewById(R.id.product_image);
             name = itemView.findViewById(R.id.product_name);
             brand = itemView.findViewById(R.id.product_brand);
             price = itemView.findViewById(R.id.product_price);
@@ -85,8 +91,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
         public void addRowToList(int position)
         {
-//            int id = context.getResources().getIdentifier(products.get(position).get(), "drawable", context.getPackageName());
-//            image.setImageResource(id);
+            int id = context.getResources().getIdentifier(products.get(position).getImage(), "drawable", context.getPackageName());
+            image.setImageResource(id);
             name.setText(" "+products.get(position).getName());
             brand.setText(" "+products.get(position).getBrand());
             price.setText(" "+products.get(position).getPrice());
@@ -112,6 +118,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                         notifyItemChanged(prevSelected);
                     prevSelected=position;
 
+                }
+            });
+            row.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    viewModel.addProductToCart(position);
+                    if (position == selected)
+                        viewModel.setNumOfRow(RecyclerView.NO_POSITION);
+                    else if (position < selected)
+                        viewModel.setNumOfRow(selected - 1);
+                    notifyDataSetChanged();
+                    return true;
                 }
             });
         }
