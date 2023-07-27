@@ -3,7 +3,6 @@ package com.example.finalproject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
        this.context = context;
        this.viewModel = viewModel;
        this.listenerFrag = listenerFrag;
-        this.viewModel.getCurrentCountries().observe(activity, new Observer<ArrayList<Product>>() {
+        this.viewModel.getCurrentProducts().observe(activity, new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(ArrayList<Product> countries) {
                 setCountryList(countries);
@@ -128,6 +127,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                         viewModel.setNumOfRow(RecyclerView.NO_POSITION);
                     else if (position < selected)
                         viewModel.setNumOfRow(selected - 1);
+                    viewModel.removeProduct(position);
                     notifyDataSetChanged();
                     return true;
                 }

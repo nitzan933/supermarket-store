@@ -1,10 +1,7 @@
 package com.example.finalproject;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-
+//class contains details of each
 public class DetailsFragment extends Fragment {
     private ViewModel viewModel;
     private Product product;
@@ -31,6 +28,8 @@ public class DetailsFragment extends Fragment {
     private Context context;
     private Button add_but;
 
+    private ArrayList<Product> products;
+    private int selectedProduct;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -59,7 +58,7 @@ public class DetailsFragment extends Fragment {
                 viewModel.addProductToCart(viewModel.getPosition());
             }
         });
-        viewModel.getCurrentCountries().observe(getActivity(), new Observer<ArrayList<Product>>() {
+        viewModel.getCurrentProducts().observe(getActivity(), new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(ArrayList<Product> products) {
                 if (product != null && !products.contains(product)){
@@ -78,8 +77,20 @@ public class DetailsFragment extends Fragment {
                 }
             }
         });
+        viewModel = new ViewModelProvider(getActivity()).get(ViewModel.class);
+        this.viewModel.getCurrentProducts().observe(getActivity(),productsObserver);
+        this.viewModel.getItemSelected().observe(getActivity(), selectedProductObservable);
     }
-    
+
+
+    private Observer<ArrayList<Product>> productsObserver = new Observer<ArrayList<Product>>() {
+        @Override
+        public void onChanged(ArrayList<Product> productsList) {
+            products = productsList;
+        }
+    };
+
+
     public void changeDetails(){
         int id = context.getResources().getIdentifier(product.getImage(), "drawable", context.getPackageName());
         image.setImageResource(id);
@@ -96,5 +107,29 @@ public class DetailsFragment extends Fragment {
         details.setText("");
         price.setText("");
     }
+
+    private Observer<Integer> selectedProductObservable = new Observer<Integer>() {
+        @Override
+        public void onChanged(Integer selected) {
+            selectedProduct = selected;
+        }
+    };
+
+    public DetailsFragment() {
+    }
+
+    public static DetailsFragment newInstance() {
+        DetailsFragment fragment = new DetailsFragment();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
 
 }

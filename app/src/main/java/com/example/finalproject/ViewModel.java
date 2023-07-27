@@ -1,11 +1,7 @@
 package com.example.finalproject;
 
-import static android.content.ContentValues.TAG;
-import static java.security.AccessController.getContext;
-
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,8 +41,11 @@ public class ViewModel extends AndroidViewModel {
         pos = position;
         productSelected.setValue(pos);
     }
+    public MutableLiveData<Integer> getItemSelected() {
+        return productSelected;
+    }
 
-    public MutableLiveData<ArrayList<Product>> getCurrentCountries() {
+    public MutableLiveData<ArrayList<Product>> getCurrentProducts() {
         return products;
     }
 
@@ -58,6 +57,12 @@ public class ViewModel extends AndroidViewModel {
         return productsList.get(row);
     }
 
+    public void removeProduct(int index) {
+        ArrayList<Product> list = getCurrentProducts().getValue();
+        Product removedProducts = list.remove(index);
+       // writeToFile(removedCountry);
+        //getCountries().setValue(list);
+    }
 
     public void addProductToCart(int position) {
         String product = getProduct(position).getName();
