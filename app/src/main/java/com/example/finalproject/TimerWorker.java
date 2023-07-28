@@ -32,6 +32,14 @@ public class TimerWorker extends Worker {
         int countdownTime = 10; //10 seconds
         String product = getInputData().getString("product_down_of_cart");
 
+        for (int i = countdownTime; i >= 0; i--) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_ID);
         builder.setSmallIcon(R.drawable.cart)
                 .setContentTitle("Cart update")
@@ -44,23 +52,11 @@ public class TimerWorker extends Worker {
             NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Countdown Timer", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
-
+        MainActivity.product = product;
         Notification notification = builder.build();
         notificationManager.notify(NOTIFICATION_ID, notification);
-        isWorking = true;
-
-        for (int i = countdownTime; i >= 0; i--) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        notificationManager.cancel(NOTIFICATION_ID);
-        isWorking = false;
         MainActivity.workerThread();
-        MainActivity.product = product;
+
 
 
         Data outputData = new Data.Builder()
