@@ -8,7 +8,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerView"
-        class="com.example.finalproject.Frag"
+        class="com.example.finalproject.ProductRecyclerFrag"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/products_frag" />

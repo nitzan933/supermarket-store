@@ -22,11 +22,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private ArrayList<Product> products;
     private Context context;
     private ViewModel viewModel;
-    private Frag.OnClickListenerFrag listenerFrag;
+    private ProductRecyclerFrag.OnClickListenerFrag listenerFrag;
+
+    private CartRecyclerFrag.OnClickListenerFrag listenerFragCart;
+
     private int selected = -1;
     private int prevSelected = -1;
 
-    public ProductAdapter(Context context, FragmentActivity activity, ViewModel viewModel, Frag.OnClickListenerFrag listenerFrag)
+    public ProductAdapter(Context context, FragmentActivity activity, ViewModel viewModel, ProductRecyclerFrag.OnClickListenerFrag listenerFrag)
     {
        products = ProductXMLParser.parseProducts(context);
        this.context = context;
@@ -35,12 +38,26 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         this.viewModel.getCurrentProducts().observe(activity, new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(ArrayList<Product> countries) {
-                setCountryList(countries);
+                setProductList(countries);
             }
         });
     }
 
-    public void setCountryList(ArrayList<Product> products){
+    public ProductAdapter(Context context, FragmentActivity activity, ViewModel viewModel, CartRecyclerFrag.OnClickListenerFrag listenerFragCart)
+    {
+        products = ProductXMLParser.parseProducts(context);
+        this.context = context;
+        this.viewModel = viewModel;
+        this.listenerFrag = listenerFrag;
+        this.viewModel.getCurrentProducts().observe(activity, new Observer<ArrayList<Product>>() {
+            @Override
+            public void onChanged(ArrayList<Product> countries) {
+                setProductList(countries);
+            }
+        });
+    }
+
+    public void setProductList(ArrayList<Product> products){
         this.products = products;
     }
 
@@ -127,7 +144,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                         viewModel.setNumOfRow(RecyclerView.NO_POSITION);
                     else if (position < selected)
                         viewModel.setNumOfRow(selected - 1);
-                    viewModel.removeProduct(position);
                     notifyDataSetChanged();
                     return true;
                 }

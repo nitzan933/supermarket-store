@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Frag extends Fragment{
+public class ProductRecyclerFrag extends Fragment{
 
     private ArrayList<Product> countries = new ArrayList<>();
     private View view;

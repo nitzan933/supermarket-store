@@ -1,40 +1,26 @@
 package com.example.finalproject;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.preference.ListPreference;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements Frag.OnClickListenerFrag {
+public class MainActivity extends AppCompatActivity implements ProductRecyclerFrag.OnClickListenerFrag, CartRecyclerFrag.OnClickListenerFrag {
 
     private static Context context;
     static Handler mHandler;
@@ -45,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements Frag.OnClickListe
 
     private static final int NOTIFICATION_ID = 101;
     private static final String NOTIFICATION_CHANNEL_ID = "countdown_channel";
-
+    private ViewModel viewModel;
 
     // to do: match layout for landscape
 
@@ -53,11 +39,10 @@ public class MainActivity extends AppCompatActivity implements Frag.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = getApplicationContext();
         br = new NetworkBroadcastReceiver();
         IntentFilter i = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(br,i);
-
+        context=getApplicationContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         changeTheme(prefs.getBoolean("switch_dark_theme", false));
         DetailsFragment fragB = (DetailsFragment) getSupportFragmentManager().findFragmentByTag("FRAGB");
@@ -124,6 +109,14 @@ public class MainActivity extends AppCompatActivity implements Frag.OnClickListe
             case R.id.exit:
                 showAlertDialogForExit();
                 return true;
+            case R.id.cart:
+                getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragmentContainerView, CartRecyclerFrag.class,null,"FRAGB")
+                    .addToBackStack(null)
+                    .commit();
+                getSupportFragmentManager().executePendingTransactions();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -134,6 +127,9 @@ public class MainActivity extends AppCompatActivity implements Frag.OnClickListe
         ExitDialog alertDialog = new ExitDialog();
         alertDialog.show(fm, "fragment_alert");
     }
+
+
+
 
     public static class mySettings extends PreferenceFragmentCompat{
 
