@@ -12,29 +12,27 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder>
+public class ProductAdapterCart extends RecyclerView.Adapter<ProductAdapterCart.MyViewHolder>
 {
     private ArrayList<Product> products;
     private Context context;
-    private ViewModel viewModel;
-    private ViewModelCart viewModelCart;
-    private ProductRecyclerFrag.OnClickListenerFrag listenerFrag;
+    private ViewModelCart viewModel;
+    private CartRecyclerFrag.OnClickListenerFrag listenerFragCart;
+
     private int selected = -1;
     private int prevSelected = -1;
 
-
-    public ProductAdapter(Context context, FragmentActivity activity, ViewModel viewModel, ProductRecyclerFrag.OnClickListenerFrag listenerFrag)
+    public ProductAdapterCart(Context context, FragmentActivity activity, ViewModelCart viewModel, CartRecyclerFrag.OnClickListenerFrag listenerFragCart)
     {
        products = ProductXMLParser.parseProducts(context);
        this.context = context;
        this.viewModel = viewModel;
-       this.listenerFrag = listenerFrag;
+       this.listenerFragCart = listenerFragCart;
         this.viewModel.getCurrentCart().observe(activity, new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(ArrayList<Product> products) {
@@ -49,15 +47,15 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
 
     @NonNull
     @Override
-    public ProductAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ProductAdapterCart.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //This is where you inflate the layout (Giving a look to our rows)
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.row,parent,false);
-        return new ProductAdapter.MyViewHolder(view);
+        return new ProductAdapterCart.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductAdapter.MyViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull ProductAdapterCart.MyViewHolder holder, int position)
     {
         selected = this.viewModel.getPosition();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -98,42 +96,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             name.setText(" "+products.get(position).getName());
             brand.setText(" "+products.get(position).getBrand());
             price.setText(" "+products.get(position).getPrice());
-            row.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    viewModel.addProductToCart(position);
-                    if (position == selected)
-                        viewModel.setNumOfRow(RecyclerView.NO_POSITION);
-                    else if (position < selected)
-                        viewModel.setNumOfRow(selected - 1);
-                    notifyDataSetChanged();
-                    return true;
-                }
-            });
-            row.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    viewModelCart.setNumOfRow(position);
-                    listenerFrag.clickOnProduct();
-                    notifyItemChanged(position);
-                    if(prevSelected!= -1)
-                        notifyItemChanged(prevSelected);
-                    prevSelected=position;
-
-                }
-            });
-            row.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    viewModel.addProductToCart(position);
-                    if (position == selected)
-                        viewModelCart.setNumOfRow(RecyclerView.NO_POSITION);
-                    else if (position < selected)
-                        viewModelCart.setNumOfRow(selected - 1);
-                    notifyDataSetChanged();
-                    return true;
-                }
-            });
         }
     }
 

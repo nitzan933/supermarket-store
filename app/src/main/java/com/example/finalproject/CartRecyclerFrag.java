@@ -20,8 +20,8 @@ public class CartRecyclerFrag extends Fragment{
     private View view;
 
     private RecyclerView recyclerView;
-    private ProductAdapter adapter;
-    private ViewModel viewModel;
+    private ProductAdapterCart adapter;
+    private ViewModelCart viewModel;
     private OnClickListenerFrag listenerFrag;
 
     @Override
@@ -40,10 +40,10 @@ public class CartRecyclerFrag extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.cart_frag, container,false);
-        recyclerView = view.findViewById(R.id.mRecyclerview);
+        recyclerView = view.findViewById(R.id.mRecyclerview2);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        viewModel = new ViewModelProvider(getActivity()).get(ViewModel.class);
-        adapter = new ProductAdapter(getContext(), getActivity(), viewModel, listenerFrag);
+        viewModel = new ViewModelProvider(getActivity()).get(ViewModelCart.class);
+        adapter = new ProductAdapterCart(getContext(), getActivity(), viewModel, listenerFrag);
         recyclerView.setAdapter(adapter);
         return view;
     }

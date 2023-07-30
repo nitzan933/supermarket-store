@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/mRecyclerview"
+            android:id="@+id/mRecyclerview2"
             layout_constraintBottom_toBottomOf="parent"
             layout_constraintEnd_toEndOf="parent"
             layout_constraintStart_toStartOf="parent"

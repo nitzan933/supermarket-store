@@ -2,7 +2,6 @@ package com.example.finalproject;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -21,7 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ViewModel extends AndroidViewModel {
+public class ViewModelCart extends AndroidViewModel {
     private final Application application;
     private final String fileName = "RemovedProducts.rc";
     private MutableLiveData<ArrayList<Product>> products,cart;
@@ -35,7 +34,7 @@ public class ViewModel extends AndroidViewModel {
 
     private int originalSize;
 
-    public ViewModel(@NonNull Application application) {
+    public ViewModelCart(@NonNull Application application) {
         super(application);
         this.application = application;
         context = application.getApplicationContext();
