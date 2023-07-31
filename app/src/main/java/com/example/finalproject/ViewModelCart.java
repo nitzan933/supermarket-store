@@ -63,10 +63,10 @@ public class ViewModelCart extends AndroidViewModel {
         added = new boolean[originalSize];
         numberOfProducts=0;
         sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
-        boolean remember = sharedPref.getBoolean("rememberRemoved", false);
+        boolean remember = sharedPref.getBoolean("rememberCart", false);
         bb=new byte[100];
 
-        if (!remember) {
+        if (remember) {
            readFile(sharedPref);
       } else {
            resetFile(sharedPref);
@@ -108,12 +108,12 @@ public class ViewModelCart extends AndroidViewModel {
         // SP
         if (sharedPref.getBoolean("useSP", true))
         {
-                    for (int i = originalSize - 1; i >= 0; i--)
-                    {
-                        if (sharedPref.getBoolean(productsList.get(i).getName(), false))
-                                cartList.add(productsList.get(i));
+            for (int i = originalSize - 1; i >= 0; i--)
+            {
+                if (sharedPref.getBoolean(productsList.get(i).getName(), false))
+                        cartList.add(productsList.get(i));
 
-                    }
+            }
 
         }
         // RAW FILE
