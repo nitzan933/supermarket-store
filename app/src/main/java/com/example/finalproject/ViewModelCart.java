@@ -41,7 +41,6 @@ public class ViewModelCart extends AndroidViewModel {
     private SharedPreferences sharedPref;
     private int originalSize;
 
-    private int[]counter;
     byte[] bb;
 
     private int numberOfProducts;
@@ -66,8 +65,8 @@ public class ViewModelCart extends AndroidViewModel {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(application);
         boolean remember = sharedPref.getBoolean("rememberRemoved", false);
         bb=new byte[100];
-        counter=new int[100];
-        if (remember) {
+
+        if (!remember) {
            readFile(sharedPref);
       } else {
            resetFile(sharedPref);
@@ -105,6 +104,7 @@ public class ViewModelCart extends AndroidViewModel {
 
 
     private void readFile(SharedPreferences sharedPref) {
+
         // SP
         if (sharedPref.getBoolean("useSP", true))
         {
@@ -119,18 +119,14 @@ public class ViewModelCart extends AndroidViewModel {
         // RAW FILE
         else {
             ByteBuffer bf = readSavedRAWFile();
-            if (bf != null)
-                for (int i = productsList.size() - 1; i >= 0; i--) {
-                    if (bf.get(i) == 1) {
-                        added[i] = true;
-                        for(int j=0;j<sharedPref.getInt(String.valueOf(i),0);j++) {
-                            cartList.add(getProduct(i));
-                        }
-                    } else
-                        added[i] = false;
+            numberOfProducts=sharedPref.getInt("productCount",0);
+
+            for(int i=0;i<numberOfProducts;i++)
+                  {
+                      cartList.add(getProduct((int) bf.get(i)));
+
+                    }
                 }
-            resetFile(sharedPref);
-        }
         }
 
 
@@ -160,14 +156,9 @@ public static void productRemove(String Product)
 
 
     private void writeToFile(Product cartProduct) {
-        numberOfProducts++;
-        for (int i = 0; i < originalSize; i++)
-            if (productsList.get(i).equals(cartProduct)) {
-                added[i] = true;
-                counter[i]=counter[i]+1;
-            }
+
         // SP
-        if (sharedPref.getBoolean("useSP", true)) { //need changes
+        if (sharedPref.getBoolean("useSP", true)) {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putBoolean(cartProduct.getName(), true);
             editor.commit();
@@ -180,15 +171,15 @@ public static void productRemove(String Product)
                 FileOutputStream fos = application.openFileOutput(fileName, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
 
+                //
                 for (int i = 0; i < originalSize; i++) {
-                    bb[i] = (byte) (added[i] ? 1 : 0);
-                    if(productsList.get(i).equals(cartProduct)) {
-                        editor.putInt(String.valueOf(i), counter[i]);
-                        editor.putInt("cartSize",numberOfProducts);
-                        editor.commit();
-                        editor.apply();
+                    if (productsList.get(i).equals(cartProduct)) {
+                        bb[numberOfProducts++] = (byte) (i);
                     }
                 }
+                editor.putInt("productCount",numberOfProducts);
+                editor.commit();
+                editor.apply();
 
                 Log.i("EX8", bb.toString());
                 fos.write(bb);

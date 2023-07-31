@@ -2,40 +2,18 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceScreen
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@android:drawable/ic_menu_manage"
-        app:isPreferenceVisible="false">
-
-        <SwitchPreferenceCompat
-            app:iconSpaceReserved="false"
-            app:key="rememberRemoved"
-            app:title="Remember removed countries" />
-
-        <SwitchPreferenceCompat
-            app:iconSpaceReserved="false"
-            app:key="useSP"
-            app:title="SP or RAW? True = SP" />
-
-
-    </PreferenceScreen>
-    <SwitchPreferenceCompat
-        android:id="@+id/switchPreferenceCompat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:iconSpaceReserved="false"
-        app:key="rememberRemoved"
-        app:title="Remember removed countries" />
-    <SwitchPreferenceCompat
-        android:id="@+id/switchPreferenceCompat2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:iconSpaceReserved="false"
-        app:key="useSP"
-        app:title="SP or RAW? True = SP" />
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="switch_dark_theme"
         android:title="Dark theme" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="true"
+        android:key="rememberCart"
+        android:title="Remember Cart" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="useSP"
+        android:title="use SP method" />
 </PreferenceScreen>
