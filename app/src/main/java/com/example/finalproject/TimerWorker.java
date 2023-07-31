@@ -58,7 +58,7 @@ public class TimerWorker extends Worker {
             notificationManager.createNotificationChannel(channel);
         }
         MainActivity.product = product;
-        ViewModelCart.productRemove(product);
+       // ViewModelCart.productRemove(product);
         Notification notification = builder.build();
         notificationManager.notify(NOTIFICATION_ID, notification);
         MainActivity.workerThread();
