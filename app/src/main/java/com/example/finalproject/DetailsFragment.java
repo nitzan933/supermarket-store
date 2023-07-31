@@ -16,9 +16,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-//class contains details of each
+//class contains details of each product in a fragment of its own
 public class DetailsFragment extends Fragment {
     private ViewModel viewModel;
+    private ViewModelCart viewModelCart;
+
     private Product product;
     private ImageView image;
     private TextView name;
@@ -37,29 +39,31 @@ public class DetailsFragment extends Fragment {
         super.onAttach(context);
     }
 
-    @Override
+    @Override //inflates the details fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return inflater.inflate(R.layout.details_fragment, container,false);
     }
 
-    @Override
+    @Override //on create view gets the view model to use
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewModel = new ViewModelProvider(requireActivity()).get(ViewModel.class);
+        viewModelCart=new ViewModelProvider(requireActivity()).get(ViewModelCart.class);
         image = view.findViewById(R.id.dimage);
-        name = view.findViewById(R.id.name);
+        name = view.findViewById(R.id.name);    //getting all parameters from view
         brand = view.findViewById(R.id.brand);
         details = view.findViewById(R.id.details);
         price = view.findViewById(R.id.price);
         add_but = view.findViewById(R.id.add_but);
         add_but.setOnClickListener(new View.OnClickListener(){
             public void onClick(View arg0) {
-                viewModel.addProductToCart(viewModel.getPosition());
+                viewModelCart.addProductToCart(viewModel.getPosition()); //getting the row position and
+                                                                         //add it to the cart
             }
         });
         viewModel.getCurrentProducts().observe(getActivity(), new Observer<ArrayList<Product>>() {
-            @Override
+            @Override //observers for products inside the view model
             public void onChanged(ArrayList<Product> products) {
                 if (product != null && !products.contains(product)){
                     details.setText("");
@@ -70,7 +74,7 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onChanged(Integer row) {
                 if (row >= 0){
-                    product = viewModel.getProduct(row);
+                    product = viewModel.getProduct(row); //getting the row
                     if (product != null)
                         changeDetails();
                     else delDetails();
@@ -82,7 +86,7 @@ public class DetailsFragment extends Fragment {
         this.viewModel.getItemSelected().observe(getActivity(), selectedProductObservable);
     }
 
-
+//another way to observe products
     private Observer<ArrayList<Product>> productsObserver = new Observer<ArrayList<Product>>() {
         @Override
         public void onChanged(ArrayList<Product> productsList) {
@@ -91,7 +95,7 @@ public class DetailsFragment extends Fragment {
     };
 
 
-    public void changeDetails(){
+    public void changeDetails(){ //setting the details for the row
         int id = context.getResources().getIdentifier(product.getImage(), "drawable", context.getPackageName());
         image.setImageResource(id);
         name.setText(product.getName());
@@ -99,7 +103,7 @@ public class DetailsFragment extends Fragment {
         details.setText(product.getDetails());
         price.setText("" + product.getPrice());
     }
-    public void delDetails(){
+    public void delDetails(){  //reset details if row isn't there
         int id = context.getResources().getIdentifier("loading", "drawable", context.getPackageName());
         image.setImageResource(id);
         name.setText("");

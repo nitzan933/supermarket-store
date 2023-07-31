@@ -23,9 +23,7 @@ public class ProductAdapterCart extends RecyclerView.Adapter<ProductAdapterCart.
     private Context context;
     private ViewModelCart viewModel;
     private CartRecyclerFrag.OnClickListenerFrag listenerFragCart;
-
     private int selected = -1;
-    private int prevSelected = -1;
 
     public ProductAdapterCart(Context context, FragmentActivity activity, ViewModelCart viewModel, CartRecyclerFrag.OnClickListenerFrag listenerFragCart)
     {

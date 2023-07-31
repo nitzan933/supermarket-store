@@ -1,6 +1,6 @@
 package com.example.finalproject;
 
-public class Product {
+public class Product { //product class
     String image;
     String name;
     String brand;

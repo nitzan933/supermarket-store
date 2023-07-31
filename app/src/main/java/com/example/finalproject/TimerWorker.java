@@ -11,6 +11,7 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.ArrayList;
 
 
 public class TimerWorker extends Worker {
@@ -21,6 +22,10 @@ public class TimerWorker extends Worker {
     public static boolean isWorking = false;
     private Context context;
 
+    private  ArrayList<Product> cartList;
+
+    private ViewModelCart ViewModel;
+
     public TimerWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
         this.context = context;
@@ -29,7 +34,7 @@ public class TimerWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        int countdownTime = 10; //10 seconds
+        int countdownTime = 30; //30 seconds
         String product = getInputData().getString("product_down_of_cart");
 
         for (int i = countdownTime; i >= 0; i--) {
@@ -53,6 +58,7 @@ public class TimerWorker extends Worker {
             notificationManager.createNotificationChannel(channel);
         }
         MainActivity.product = product;
+        ViewModelCart.productRemove(product);
         Notification notification = builder.build();
         notificationManager.notify(NOTIFICATION_ID, notification);
         MainActivity.workerThread();

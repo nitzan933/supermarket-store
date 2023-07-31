@@ -1,9 +1,12 @@
 package com.example.finalproject;
 
+import static com.google.android.material.internal.ContextUtils.getActivity;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -21,11 +24,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements ProductRecyclerFrag.OnClickListenerFrag, CartRecyclerFrag.OnClickListenerFrag {
-
+//implements recycler listeners
     private static Context context;
     static Handler mHandler;
 
-    private NetworkBroadcastReceiver br;
+    private NetworkBroadcastReceiver br; //for network broadcast
 
     public static String product = "";
 
@@ -38,13 +41,18 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        br = new NetworkBroadcastReceiver();
+        setContentView(R.layout.activity_main); //main activity layout
+
+        br = new NetworkBroadcastReceiver(); //for broadcast receiver
         IntentFilter i = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(br,i);
         context=getApplicationContext();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        changeTheme(prefs.getBoolean("switch_dark_theme", false));
+        changeTheme(prefs.getBoolean("switch_dark_theme", false)); //checking the last theme that
+                                                                                //was chosen and changing theme
+
+        //showing fragments in case of landscape
         DetailsFragment fragB = (DetailsFragment) getSupportFragmentManager().findFragmentByTag("FRAGB");
         if ((getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)) {
             if (fragB != null) {
@@ -63,7 +71,10 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
             @Override
             public void handleMessage(Message message) {
                 Toast.makeText(getApplicationContext(), product + " is off the cart", Toast.LENGTH_LONG).show();
+
             }
+
+
         };
     }
 
@@ -74,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
         message.sendToTarget();
     }
 
-    @Override
+    @Override //replace fragment with the details fragment on click (this is by implementing recycler)
     public void clickOnProduct() {
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
         {
@@ -88,15 +99,14 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
     }
 
 
-
     @Override
-    public boolean onCreateOptionsMenu( Menu menu) {
+    public boolean onCreateOptionsMenu( Menu menu) {  //creating menu
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) { //what happens when you click on menu
         switch (item.getItemId()) {
             case R.id.settings:
                 getSupportFragmentManager()
@@ -110,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
                 showAlertDialogForExit();
                 return true;
             case R.id.cart:
-                getSupportFragmentManager()
+                getSupportFragmentManager() //creating the cartRecycler class when clicking on cart
                     .beginTransaction()
                     .replace(R.id.fragmentContainerView, CartRecyclerFrag.class,null,"FRAGB")
                     .addToBackStack(null)
@@ -122,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
         }
     }
 
-    private void showAlertDialogForExit() {
+    private void showAlertDialogForExit() {  //this function getting the dialog by creating the class
         FragmentManager fm = getSupportFragmentManager();
         ExitDialog alertDialog = new ExitDialog();
         alertDialog.show(fm, "fragment_alert");
@@ -133,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
 
     public static class mySettings extends PreferenceFragmentCompat{
 
-        @Override
+        @Override //changing theme key values of theme
         public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
             setPreferencesFromResource(R.xml.settings, rootKey);
             SharedPreferences.OnSharedPreferenceChangeListener listener;
@@ -152,7 +162,7 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
 
 
 
-    public static void changeTheme(boolean dark){
+    public static void changeTheme(boolean dark){ //changing the actual theme due to boolean
         if(dark)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -160,6 +170,6 @@ public class MainActivity extends AppCompatActivity implements ProductRecyclerFr
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-        super.onPointerCaptureChanged(hasCapture);
+        super.onPointerCaptureChanged(hasCapture); //??
     }
 }

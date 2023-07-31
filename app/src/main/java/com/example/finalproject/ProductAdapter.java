@@ -35,6 +35,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
        this.context = context;
        this.viewModel = viewModel;
        this.listenerFrag = listenerFrag;
+       viewModelCart=new ViewModelProvider(activity).get(ViewModelCart.class);
         this.viewModel.getCurrentCart().observe(activity, new Observer<ArrayList<Product>>() {
             @Override
             public void onChanged(ArrayList<Product> products) {
@@ -101,19 +102,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             row.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    viewModel.addProductToCart(position);
+                    viewModelCart.addProductToCart(position);
                     if (position == selected)
-                        viewModel.setNumOfRow(RecyclerView.NO_POSITION);
+                        viewModelCart.setNumOfRow(RecyclerView.NO_POSITION);
                     else if (position < selected)
-                        viewModel.setNumOfRow(selected - 1);
+                        viewModelCart.setNumOfRow(selected - 1);
                     notifyDataSetChanged();
                     return true;
                 }
             });
-            row.setOnClickListener( new View.OnClickListener() {
+            row.setOnClickListener( new View.OnClickListener() { //to show the product info
                 @Override
                 public void onClick(View view) {
-                    viewModelCart.setNumOfRow(position);
+                    viewModel.setNumOfRow(position);
                     listenerFrag.clickOnProduct();
                     notifyItemChanged(position);
                     if(prevSelected!= -1)
@@ -125,7 +126,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             row.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    viewModel.addProductToCart(position);
+                    viewModelCart.addProductToCart(position);
                     if (position == selected)
                         viewModelCart.setNumOfRow(RecyclerView.NO_POSITION);
                     else if (position < selected)

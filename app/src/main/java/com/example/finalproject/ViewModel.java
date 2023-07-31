@@ -115,14 +115,4 @@ public class ViewModel extends AndroidViewModel {
     }
 
 
-    public void addProductToCart(int position) {
-        String product = getProduct(position).getName();
-        Toast.makeText(context, product + " added to cart", Toast.LENGTH_LONG).show();
-        ArrayList<Product> list = getCurrentCart().getValue();
-        list.add(getProduct(position));
-        Data data = new Data.Builder().putString("product_down_of_cart", product).build();
-        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(TimerWorker.class).setInputData(data).build();
-        WorkManager.getInstance(context).enqueue(workRequest);
-    }
-
 }

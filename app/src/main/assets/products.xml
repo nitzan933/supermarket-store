@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <products>
     <product>
-        <name>Milk</name>
+        <name>Milk_3%</name>
         <brand>Tnuva</brand>
         <details>3%</details>
         <price>5.5</price>
         <image>p0</image>
     </product>
     <product>
-        <name>Milk</name>
+        <name>Milk_1%</name>
         <brand>Tara</brand>
-        <details>3%</details>
+        <details>1%</details>
         <price>5.9</price>
         <image>p1</image>
     </product>

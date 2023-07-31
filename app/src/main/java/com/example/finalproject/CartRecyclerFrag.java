@@ -1,31 +1,27 @@
 package com.example.finalproject;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 
-public class CartRecyclerFrag extends Fragment{
+public class CartRecyclerFrag extends Fragment{ //this fragment creating the view for the cart
 
-    private ArrayList<Product> countries = new ArrayList<>();
     private View view;
-
     private RecyclerView recyclerView;
     private ProductAdapterCart adapter;
     private ViewModelCart viewModel;
     private OnClickListenerFrag listenerFrag;
 
     @Override
-    public void onAttach(@NonNull Context context) {
+    public void onAttach(@NonNull Context context) {  //checking if the adapter implements the listeners
+                                                      //down in this page
         try{
             this.listenerFrag = (OnClickListenerFrag) context;
         }catch(ClassCastException e){
@@ -36,7 +32,7 @@ public class CartRecyclerFrag extends Fragment{
         super.onAttach(context);
     }
 
-    @Override
+    @Override  //on create creating adapters,views and recycler using XML
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.cart_frag, container,false);
@@ -55,7 +51,7 @@ public class CartRecyclerFrag extends Fragment{
 
     interface OnClickListenerFrag
     {
-        void clickOnProduct();
+        void clickOnProduct();  //using these function from main activity to show product info
     }
 
 

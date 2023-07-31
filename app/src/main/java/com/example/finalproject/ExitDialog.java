@@ -11,7 +11,7 @@ public class ExitDialog extends DialogFragment {
 
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {  //what exit dialog does
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle("Closing the application")
