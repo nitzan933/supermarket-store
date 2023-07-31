@@ -35,7 +35,7 @@ public class TimerWorker extends Worker {
     @Override
     public Result doWork() {
         int countdownTime = 30; //30 seconds
-        String product = getInputData().getString("product_down_of_cart");
+        String product = getInputData().getString("product");
 
         for (int i = countdownTime; i >= 0; i--) {
             try {
@@ -44,25 +44,27 @@ public class TimerWorker extends Worker {
                 e.printStackTrace();
             }
         }
+        if( ViewModelCart.productRemove(product)) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_ID);
+            builder.setSmallIcon(R.drawable.cart)
+                    .setContentTitle("Cart update")
+                    .setContentText(product + " is off the cart")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), NOTIFICATION_CHANNEL_ID);
-        builder.setSmallIcon(R.drawable.cart)
-                .setContentTitle("Cart update")
-                .setContentText(product + " is off the cart")
-                .setPriority(NotificationCompat.PRIORITY_HIGH);
+            NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Countdown Timer", NotificationManager.IMPORTANCE_HIGH);
+                notificationManager.createNotificationChannel(channel);
+            }
+            MainActivity.product = product;
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Countdown Timer", NotificationManager.IMPORTANCE_HIGH);
-            notificationManager.createNotificationChannel(channel);
+
+            Notification notification = builder.build();
+            notificationManager.notify(NOTIFICATION_ID, notification);
+            MainActivity.workerThread();
+
         }
-        MainActivity.product = product;
-       // ViewModelCart.productRemove(product);
-        Notification notification = builder.build();
-        notificationManager.notify(NOTIFICATION_ID, notification);
-        MainActivity.workerThread();
-
 
 
         Data outputData = new Data.Builder()
