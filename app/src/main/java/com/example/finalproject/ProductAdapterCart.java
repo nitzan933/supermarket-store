@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ProductAdapterCart extends RecyclerView.Adapter<ProductAdapterCart.MyViewHolder>
-{
+{ //same but without clicking functions
     private ArrayList<Product> products;
     private Context context;
     private ViewModelCart viewModel;
@@ -32,7 +32,7 @@ public class ProductAdapterCart extends RecyclerView.Adapter<ProductAdapterCart.
        this.viewModel = viewModel;
        this.listenerFragCart = listenerFragCart;
         this.viewModel.getCurrentCart().observe(activity, new Observer<ArrayList<Product>>() {
-            @Override
+            @Override //observing the cart to know what has been changes according to live data
             public void onChanged(ArrayList<Product> products) {
                 setProductList(products);
             }

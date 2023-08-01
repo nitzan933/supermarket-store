@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder>
-{
+{ //adapter for recycler and that happens when you click
     private ArrayList<Product> products;
     private Context context;
     private ViewModel viewModel;
@@ -35,13 +35,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
        this.context = context;
        this.viewModel = viewModel;
        this.listenerFrag = listenerFrag;
-       viewModelCart=new ViewModelProvider(activity).get(ViewModelCart.class);
+       viewModelCart=new ViewModelProvider(activity).get(ViewModelCart.class); //we need the view model of cart here
         this.viewModel.getCurrentCart().observe(activity, new Observer<ArrayList<Product>>() {
-            @Override
+            @Override //observer for the cart inside
             public void onChanged(ArrayList<Product> products) {
                 setProductList(products);
             }
-        });
+        }); //when changes happen get the products
     }
 
     public void setProductList(ArrayList<Product> products){
@@ -54,13 +54,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         //This is where you inflate the layout (Giving a look to our rows)
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.row,parent,false);
-        return new ProductAdapter.MyViewHolder(view);
+        return new ProductAdapter.MyViewHolder(view); //inflate row layout
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.MyViewHolder holder, int position)
     {
-        selected = this.viewModel.getPosition();
+        selected = this.viewModel.getPosition(); //from shared preference get the right color view
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         if(prefs.getBoolean("switch_dark_theme", false)){
             holder.itemView.setBackgroundColor(selected == position ? Color.valueOf(0xFF282A3A).toArgb() : Color.TRANSPARENT);
@@ -83,7 +83,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         TextView price;
         View row;
 
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView) { //each row images
             super(itemView);
             row = itemView.findViewById(R.id.row);
             image = itemView.findViewById(R.id.product_image);
@@ -92,17 +92,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             price = itemView.findViewById(R.id.product_price);
         }
 
-        public void addRowToList(int position)
+        public void addRowToList(int position) //adding the row to list of recycler
         {
             int id = context.getResources().getIdentifier(products.get(position).getImage(), "drawable", context.getPackageName());
             image.setImageResource(id);
             name.setText(" "+products.get(position).getName());
             brand.setText(" "+products.get(position).getBrand());
             price.setText(" "+products.get(position).getPrice());
-            row.setOnLongClickListener(new View.OnLongClickListener() {
+            row.setOnLongClickListener(new View.OnLongClickListener() { //what happens when you click
                 @Override
                 public boolean onLongClick(View view) {
-                    viewModelCart.addProductToCart(position);
+                    viewModelCart.addProductToCart(position);  //adding product in the view model cart
                     if (position == selected)
                         viewModelCart.setNumOfRow(RecyclerView.NO_POSITION);
                     else if (position < selected)
@@ -115,7 +115,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 @Override
                 public void onClick(View view) {
                     viewModel.setNumOfRow(position);
-                    listenerFrag.clickOnProduct();
+                    listenerFrag.clickOnProduct();  //function in main activity for layout of details
                     notifyItemChanged(position);
                     if(prevSelected!= -1)
                         notifyItemChanged(prevSelected);

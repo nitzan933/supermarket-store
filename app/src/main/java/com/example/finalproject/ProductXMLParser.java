@@ -71,7 +71,7 @@ public class ProductXMLParser {
         AssetManager assetManager = context.getAssets();
         InputStream in =null;
         try {
-            in = assetManager.open("products.xml");
+            in = assetManager.open("products.xml"); //all data of products is taken from here
         } catch (IOException e) {e.printStackTrace();}
         return in;
     }
